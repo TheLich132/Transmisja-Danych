@@ -1,0 +1,29 @@
+Wartości zmiennych:
+T_c = 3         # Czas przesłania jednej wiadomości (s)
+f_m = 250       # Najwyższa częstotliwość sygnału (Hz)
+f_n = 5000      # Najwyższa częstotliwość sygnału po modulacji (Hz)
+f_s = 25000     # Częstotliwość próbkowania (Hz)
+N = 75000       # Liczba próbek sygnału
+
+Szerokości pasma dla powyższych wartości w Hz:
+┌──────┬──────┬──────┬───────┐
+│      │ 3 dB │ 6 dB │ 12 dB │
+├──────┼──────┼──────┼───────┤
+│ za_a │    1 │  501 │   502 │
+│ za_b │  501 │  501 │   504 │
+│ za_c │  501 │  501 │   504 │
+│ zp_a │    1 │    1 │     4 │
+│ zp_b │  501 │ 1001 │  1501 │
+│ zp_c │ 4501 │ 5251 │  6001 │
+│ zf_a │    1 │    1 │     4 │
+│ zf_b │    1 │    1 │     4 │
+│ zf_c │    1 │    1 │     4 │
+└──────┴──────┴──────┴───────┘
+
+Wnioski:
+W tabeli przedstawione są wartości szerokości pasma dla różnych poziomów tłumienia (3 dB, 6 dB i 12 dB) dla poszczególnych sygnałów modulowanych. za_x to sygnały modulowane amplitudą, zp_x - modulowane fazą, a zp_f to sygnały modulowane częstotliwością. Wartości te, które są w Hz, określają minimalną szerokość pasma wymaganą do przesłania sygnału z odpowiednią jakością dla określonych wartości parametrów takich jak częstotliwość próbkowania, maksymalna częstotliwość sygnału itp.
+
+Sygnały modulowane częstotliwością (zf_x) wymagają mniejszej szerokości pasma niż sygnały modulowane amplitudą (za_x) i fazą (zp_x) dla tych samych poziomów tłumienia.
+Wymagana szerokość pasma wzrasta wraz z poziomem tłumienia dla wszystkich sygnałów modulowanych.
+
+Wybór sposobu modulacji zależy od wielu czynników, takich jak wymagana szybkość przesyłu danych, zakłócenia w środowisku transmisyjnym, koszty i dostępność urządzeń itp.

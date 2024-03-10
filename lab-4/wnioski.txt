@@ -1,0 +1,19 @@
+Szerokości pasma w Hz:
+                          ┌─────┬──────┬──────┐
+  Sygnał\Poziom tłumienia │ 3dB │ 6dB  │ 12dB │
+┌─────────────────────────┼─────┼──────┼──────┤
+│           za            │ 1Hz │ 4Hz  │ 27Hz │
+│           zp            │ 4Hz │ 12Hz │ 35Hz │
+│           zf            │ 1Hz │ 14Hz │ 23Hz │
+└─────────────────────────┴─────┴──────┴──────┘
+
+
+Wnioski:
+
+W tabeli przedstawione są szerokości pasma dla trzech różnych technik modulacji: kluczowanie amplitudy (za), kluczowanie fazy (zp) i kluczowanie częstotliwości (zf). Im większy poziom tłumienia, tym większa szerokość pasma potrzebna do przesłania sygnału zmodulowanego.
+
+Kluczowanie amplitudy wymaga najmniejszej szerokości pasma, co oznacza, że w krótkim czasie można przesłać dużo danych. Dla większego poziomu tłumienia (12 dB) kluczowanie amplitudy jest już mniej korzystne niż kluczowanie częstotliwości, ale wciąż lepsze od kluczowania fazy.
+
+Dla kluczowania fazy najmniejsza szerokość pasma wynosi 4 Hz dla poziomu tłumienia 3 dB, a dla poziomu tłumienia 12 dB, szerokość pasma wzrasta do 35 Hz. Oznacza to, że modulacja fazy wymaga największej szerokości pasma, co oznacza, że w krótkim czasie można przesłać mniej danych niż w przypadku modulacji amplitudy lub częstotliwości.
+
+Najmniejsza szerokość pasma po kluczowaniu częstotliwości wynosi 1 Hz dla poziomu tłumienia 3 dB, ale dla poziomu tłumienia 6 dB, szerokość pasma wzrasta do 14 Hz. Oznacza to, że modulacja częstotliwości wymaga mniejszej szerokości pasma niż modulacja fazy, ale większej niż modulacja amplitudy.

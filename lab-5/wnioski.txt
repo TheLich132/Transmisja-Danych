@@ -1,0 +1,11 @@
+Modulacja/Demodulacja ASK:
+Sygnał ASK można demodulować, porównując go z odpowiednim progiem. Jeśli całka z amplitudy sygnału jest powyżej progu, odczytujemy stan wysoki (1), w przeciwnym razie stan niski (0).
+Modulacja ASK jest podatna na zakłócenia szumowe, które mogą wpływać na dokładność demodulacji.
+
+Modulacja/Demodulacja PSK:
+Sygnał PSK można demodulować, szukając sygnałów mniejszych niż 0. Dla wartości mniejszych niż 0 odczytujemy stan wysoki (1), dla większych odczytujemy stan niski (0).
+Modulacja PSK jest odporna na zakłócenia amplitudy, ale może być wrażliwa na zakłócenia fazy, co może prowadzić do błędów demodulacji.
+
+Modulacja/Demodulacja FSK:
+By dokonać demodulacji FSK najpierw są generowane z sygnału wejściowego dwa sygnały nośne xt1 i xt2 dla dwóch częstotliwości nośnych f_n1 i f_n2. Sygnały xt1 i xt2 przechodzą przez filtr dolnoprzepustowy. Są one filtrowane przez sumowanie próbek w oknie o szerokości f_s * T_b. Następnie, sygnały pt1 i pt2 są odejmowane od siebie, aby otrzymać sygnał detekcyjny pt. Na koniec z sygnału pt dla wartości sygnału mniejszych niż 0 odczytujemy stan wysoki (1), dla większych odczytujemy stan niski (0) i zapisujemy te stany do ct, z którego będziemy korzystać do zamiany sygnału na ciąg bitów, a następnie w wiadomość w postaci napisowej.
+Modulacja FSK jest odporna na zakłócenia amplitudy i fazy, ale może być wrażliwa na zakłócenia częstotliwości, które mogą prowadzić do błędów demodulacji.

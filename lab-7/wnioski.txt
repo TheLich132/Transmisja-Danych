@@ -1,0 +1,93 @@
+Wartości zmiennych:
+TB = 0.1			# Czas na 1 bit wiadomości (s)
+W = 2				# 
+Fs = 24000			# Częstotliwość próbkowania (Hz)
+Fn = 10				# (W - 1)/TB Sygnał nośny (Hz)
+A_1 = 1				# Parametr do modulacji ASK
+A_2 = 0.5			# Parametr do modulacji ASK
+
+Alpha = tablica wartości od 0 do 2 z krokiem 0.1
+Beta = tablica wartości od 0 do 20 z krokiem 0.5
+
+Program automatycznie wykonuje zadania od 2 do 4 dla każdego sposobu modulacji (ASK, PSK, FSK), iterując po każdej wartości Alpha i Beta. Po każdym zadaniu program generuje wykresy porównujące BER (odległość Hamminga między wiadomością wejściową zamienioną na postać bitową, a wiadomością wyjściową z odbiornika) do:
+ - (w zadaniu 2)   BER porównywane do Alpha (Szum)
+ - (w zadaniu 3)   BER porównywane do Beta  (Tłumienie)
+ - (w zadaniu 4_1) BER porównywane na raz do Alpha i Beta (wykres 3D) (Tłumienie + Szum)
+ - (w zadaniu 4_2) BER porównywane na raz do Alpha i Beta (wykres 3D) (Szum + Tłumienie)
+Wykresy są zapisywane do folderu ./figures do podfolderów odpowiadającym nazwie użytej modulacji (np. ./figures/ASK/).
+Niestety wykresy 3D nie są zrobione najlepiej, co było spowodowane kiepską dokumentacją biblioteki od wykresów i przez moją niepełną znajomość nowo uczonego języka Rust. 
+
+Wszystkie wnioski zostały oparte na wykresach, przez osobę, która nie jest ekspertem w dziedzinie transmisji danych ;)
+
+
+------ WNIOSKI ------
+- ASK -
+Szumienie sygnału:
+Wraz ze wzrostem poziomu alpha, siła szumu wzrasta, co zwiększa prawdopodobieństwo wystąpienia błędów transmisji i tym samym zwiększa wartość BER. Z wykresu wynika, że do wartości zmiennej alpha równej 0.6 demodulacja radziła sobie jeszcze całkiem nieźle. Od wartości 0.6, im większe alfa, wzrost wartości BER przyspiesza. Przy alpha równym około 1.3 na moment spada z wartości 0.4 do około 0.2 i przy kolejnych wartościach alfa znowu zaczyna rosnąć. Od wartości alfa 1.6 BER się stabilizuje i nie zmienia mocno swoich wartości.
+Pokazuje to, że sygnał zmodulowany ASK jest podatny na szum i psuje on sygnał do tego stopnia, że otrzymanie wysłanej wiadomości w całości staje się trudne.
+
+Tłumienie sygnału:
+Demodulacja ASK kompletnie nie radzi sobie ze stłumionym sygnałem. Już od pierwszej wartości beta (0.5) BER od razu jest równy około 0.53 i do końca wartości beta zostaje na tym samym poziomie. 
+W demodulacji ASK zmienna h jest wyliczana automatycznie z wartości sygnału zmodulowanego. Możliwe, że gdyby h było ustawione na sztywno, to wartość BER nie byłaby stała, a mogła by się zwiększać to pewnej wartości beta.
+
+Szumienie + Tłumienie sygnału:
+Przez wpływ tłumienia na ASK, BER bardzo szybko rośnie do wartości około 0.53 i już tam zostaje. Kolejne wzrosty wartości alpha powodują, gdzie beta jest równe 0, powodują że BER od razu rozpoczyna z wartością większą od 0
+
+Tłumienie + Szumienie sygnału:
+Podobna sytuacja jak w poprzednim układzie. Wartości BER szybko rosną do wartości około 0.53 i tam zostają.
+
+
+- PSK -
+Szumienie sygnału:
+Szumienie nie wpływa na demodulację sygnału zmodulowanego PSK przez cały zakres wartości alpha.
+
+Tłumienie sygnału:
+Tłumienie nie wpływa na demodulację sygnału zmodulowanego PSK przez cały zakres wartości beta. 
+Nawet kiedy beta miała duże wartości i stłumiony sygnał wyglądał, jakby był linią prostą, to wartości w tej "prostej linii" tak na prawdę są bardzo małymi wartościami (np. 2*10^-200), przez co demodulator daje radę dalej z tego wyliczyć całkę i podać poprawnie demodulowaną wiadomość.
+
+Szumienie + tłumienie sygnału:
+Szumienie + tłumienie nie wpływa na demodulację sygnału zmodulowanego PSK przez cały zakres wartości alpha, jak i przez cały zakres wartości beta.
+
+Tłumienie + szumienie sygnału:
+Kiedy alpha jest równa 0, czyli szumienie sygnału nie następuje, przez wszystkie iteracje wartości beta BER pozostaje bez zmian na wartości 0. 
+Dla kolejnych wartości alfa BER zaczyna się zmieniać. Gdy tłumienie jest zwiększane, szum powoduje duże zmiany w sygnale i wartość BER, przy zmianie bety, skaczę raz w górę, raz w dół, nie jest to stała zmiana wartości. 
+
+- FSK -
+Szumienie sygnału:
+Podobnie jak z PSK, szumienie nie wpływa na demodulację sygnału zmodulowanego FSK przez cały zakres wartości alpha.
+
+Tłumienie sygnału:
+Podobnie jak z PSK, tłumienie nie wpływa na demodulację sygnału zmodulowanego FSK przez cały zakres wartości beta. 
+Podobna zależność z małymi wartościami jak z PSK.
+
+Szumienie + tłumienie sygnału:
+Szumienie + tłumienie nie wpływa na demodulację sygnału zmodulowanego PSK przez cały zakres wartości alpha, jak i przez cały zakres wartości beta.
+
+Tłumienie + szumienie sygnału:
+Wykres 3D dla tłumienia + szumienia dla FSK wygląda bardzo podobnie jak ten z PSK dla tego samego punktu. Jednakże, na wykresie wygląda jakby wartości BER dla FSK były w większości przypadków lepsze, niż te z PSK (ale trudno to w 100% ocenić, bo jak pisałem wyżej, wykresy nie są najlepsze).
+
+
+- Podsumowanie -
+Podsumowując, analiza wpływu szumienia i tłumienia sygnału na demodulację trzech różnych typów modulacji - ASK, PSK i FSK - wykazała następujące wnioski:
+
+ASK:
+- Szumienie sygnału: Wzrost poziomu alpha powoduje wzrost szumu, co zwiększa prawdopodobieństwo błędów transmisji i wartość BER. Demodulacja radzi sobie jeszcze stosunkowo dobrze do wartości alfa równego 0.6, po czym wzrost BER przyspiesza.
+- Tłumienie sygnału: Demodulacja ASK nie radzi sobie z tłumieniem sygnału, a BER pozostaje na stałym poziomie.
+- Szumienie + Tłumienie sygnału: BER szybko rośnie do około 0.53 i tam się stabilizuje.
+- Tłumienie + Szumienie sygnału: Tak samo jak w poprzedniej konfiguracji, BER szybko rośnie do około 0.53 i tam się stabilizuje.
+
+PSK:
+- Szumienie sygnału: Szumienie nie wpływa na demodulację sygnału PSK przez cały zakres wartości alpha.
+- Tłumienie sygnału: Tłumienie również nie ma wpływu na demodulację sygnału PSK przez cały zakres wartości beta.
+- Szumienie + Tłumienie sygnału: Zarówno szumienie, jak i tłumienie nie mają wpływu na demodulację sygnału PSK.
+- Tłumienie + Szumienie sygnału: Dla przypadku tłumienia sygnału wraz ze wzrostem wartości beta, wartość BER utrzymuje się na stałym poziomie. Jednak gdy dodamy szumienie sygnału, występują niestabilne zmiany BER, które nie podlegają żadnemu wzorcowi.
+
+FSK:
+- Szumienie sygnału: Podobnie jak w przypadku PSK, szumienie nie wpływa na demodulację sygnału FSK przez cały zakres wartości alpha.
+- Tłumienie sygnału: Tłumienie nie ma wpływu na demodulację sygnału FSK przez cały zakres wartości beta.
+- Szumienie + Tłumienie sygnału: Zarówno szumienie, jak i tłumienie nie mają wpływu na demodulację sygnału FSK.
+- Tłumienie + Szumienie sygnału: Na wykresie 3D dla tłumienia + szumienia, wartości BER dla modulacji FSK wydają się być głównie lepsze niż dla PSK. Jednakże, ocena jest trudna ze względu na niedoskonałości wykresów.
+
+W przypadku ASK, zarówno szumienie, jak i tłumienie sygnału mają negatywny wpływ na demodulację, prowadząc do wzrostu wartości BER. Natomiast w przypadku PSK i FSK, oba czynniki - szumienie i tłumienie - nie mają znaczącego wpływu na demodulację, a wartość BER pozostaje na stabilnym poziomie.
+
+Wnioskiem jest, że modulacje PSK i FSK są bardziej odporne na szumienie i tłumienie sygnału w porównaniu do modulacji ASK, co czyni je bardziej niezawodnymi w warunkach zakłóceń transmisyjnych.

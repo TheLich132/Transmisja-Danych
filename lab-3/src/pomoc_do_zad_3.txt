@@ -1,0 +1,7 @@
+
+Zadanie 3
+1. Sprawdzi  maximum, odjąć od każdej próbki taką wartość by max było 0dB
+2. wyznaczamy spadek o określoną ilość dB od maximum
+3. wyznaczamy przecięcia z progiem z pkt 2
+4. f_min = 1 przecięcie, f_max = ostatnie przecięcie
+5. Szerokość pasma = f_max - f_min
